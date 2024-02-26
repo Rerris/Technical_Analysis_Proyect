@@ -1,0 +1,10 @@
+Python 3.11.1
+
+Libraries:
+pandas 2.1.4
+ta-0.11.0 / pip show ta
+plotly.graph_objects/plotly 5.18.0
+requests 2.31.0
+from io import StringIO-same as python version
+numpy 1.26.3
+optuna 3.5.0
