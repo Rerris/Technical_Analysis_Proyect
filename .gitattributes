@@ -1,0 +1,2 @@
+# Auto detect text files and perform LF normalization
+search/index.py linguist-generated=true
