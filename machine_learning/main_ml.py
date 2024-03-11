@@ -478,6 +478,9 @@ def backtest_svm(data, model, target, take_profit, stop_loss, initial_capital):
     # Imprimir la matriz de confusión
     print("Confusion Matrix:")
 
+    # Imprimir el capital final
+    print("Final capital:", capital)
+
 # Probar la estrategia con el modelo SVM para "Long"
 model = svm.SVC(C=0.01, kernel='rbf')
 model.fit(data[['RSI', 'Ema 13', 'Ema 200']], data['Long'])
@@ -543,6 +546,9 @@ def backtest_xgboost(data, model, target, take_profit, stop_loss, initial_capita
     
     # Imprimir la matriz de confusión
     print("Confusion Matrix:")
+
+    # Imprimir el capital final
+    print("Final capital:", capital)
 
 # Probar la estrategia con el modelo XGBoost para "Long"
 model = xgb.XGBClassifier(eta=0.1, max_depth=6, subsample=0.8, colsample_bytree=0.8)
