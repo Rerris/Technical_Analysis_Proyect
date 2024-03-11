@@ -4,4 +4,8 @@
 
 -With this combination that maximizes profit it finds the optimized parameters for the combinaton of indicators.
 
+-then we create models of Machine Learning to obtain results 
+
+-optimized and backtest the models.
+
 -Finally we get the profit using this strategy.
