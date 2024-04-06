@@ -353,7 +353,7 @@ for param, value in best_params.items():
     print(f"Optimal {param}: {value}")
 
 # Backtesting functions
-def backtest_logistic_regression(data, model, target, take_profit, stop_loss, initial_capital):
+def backtest_logistic_regression(data, model, target, take_profit, stop_loss, initial_capital, margin_rate):
     # Crear una copia de los datos
     data = data.copy()
     
@@ -386,6 +386,8 @@ def backtest_logistic_regression(data, model, target, take_profit, stop_loss, in
             if data['Close'].iloc[i] >= entry_price * (1 + take_profit) or data['Close'].iloc[i] <= entry_price * (1 - stop_loss):
                 # Salir de la operación
                 in_trade = False
+                # Agregar los fondos de margen utilizados al capital
+                capital += (entry_price - data['Close'].iloc[i]) * margin_rate
         # Si no estamos en una operación y el modelo predice una entrada
         elif data['Prediction'].iloc[i] == 1:
             # Entrar en la operación
@@ -423,7 +425,7 @@ model.fit(data[['RSI', 'Ema 13', 'Ema 200']], data['Short'])
 backtest_logistic_regression(data, model, 'Short', 0.05, 0.02, 100000)
 
 #Funcion de backtest para SVM
-def backtest_svm(data, model, target, take_profit, stop_loss, initial_capital):
+def backtest_svm(data, model, target, take_profit, stop_loss, initial_capital, margin_rate):
     # Crear una copia de los datos
     data = data.copy()
     
@@ -456,6 +458,8 @@ def backtest_svm(data, model, target, take_profit, stop_loss, initial_capital):
             if data['Close'].iloc[i] >= entry_price * (1 + take_profit) or data['Close'].iloc[i] <= entry_price * (1 - stop_loss):
                 # Salir de la operación
                 in_trade = False
+                # Agregar los fondos de margen utilizados al capital
+                capital += (entry_price - data['Close'].iloc[i]) * margin_rate
         # Si no estamos en una operación y el modelo predice una entrada
         elif data['Prediction'].iloc[i] == 1:
             # Entrar en la operación
@@ -477,6 +481,9 @@ def backtest_svm(data, model, target, take_profit, stop_loss, initial_capital):
     
     # Imprimir la matriz de confusión
     print("Confusion Matrix:")
+
+    # Imprimir el capital final
+    print("Final capital:", capital)
 
 # Probar la estrategia con el modelo SVM para "Long"
 model = svm.SVC(C=0.01, kernel='rbf')
@@ -489,7 +496,7 @@ model.fit(data[['RSI', 'Ema 13', 'Ema 200']], data['Short'])
 backtest_svm(data, model, 'Short', 0.05, 0.02, 100000)
 
 # Funcion de backtest para XGBoost
-def backtest_xgboost(data, model, target, take_profit, stop_loss, initial_capital):
+def backtest_xgboost(data, model, target, take_profit, stop_loss, initial_capital, margin_rate):
     # Crear una copia de los datos
     data = data.copy()
     
@@ -522,6 +529,8 @@ def backtest_xgboost(data, model, target, take_profit, stop_loss, initial_capita
             if data['Close'].iloc[i] >= entry_price * (1 + take_profit) or data['Close'].iloc[i] <= entry_price * (1 - stop_loss):
                 # Salir de la operación
                 in_trade = False
+                # Agregar los fondos de margen utilizados al capital
+                capital += (entry_price - data['Close'].iloc[i]) * margin_rate
         # Si no estamos en una operación y el modelo predice una entrada
         elif data['Prediction'].iloc[i] == 1:
             # Entrar en la operación
@@ -543,6 +552,9 @@ def backtest_xgboost(data, model, target, take_profit, stop_loss, initial_capita
     
     # Imprimir la matriz de confusión
     print("Confusion Matrix:")
+
+    # Imprimir el capital final
+    print("Final capital:", capital)
 
 # Probar la estrategia con el modelo XGBoost para "Long"
 model = xgb.XGBClassifier(eta=0.1, max_depth=6, subsample=0.8, colsample_bytree=0.8)
