@@ -1,3 +1,4 @@
+# Required Libraries
 import gymnasium
 from gymnasium import spaces
 import numpy as np
@@ -6,33 +7,6 @@ import ta
 import matplotlib.pyplot as plt
 import requests
 import io
-
-# Data Loading and Technical Indicator Computation
-
-url = "https://raw.githubusercontent.com/Rerris/Technical_Analysis_Proyect/main/data/aapl_5m_test.csv"
-response = requests.get(url, verify=False)
-data = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
-
-print(data.head())
-
-# Compute RSI
-rsi_indicator = ta.momentum.RSIIndicator(close=data['Close'], window=14)
-data['RSI'] = rsi_indicator.rsi()
-
-# Compute MACD
-macd_indicator = ta.trend.MACD(close=data['Close'], window_slow=26, window_fast=12, window_sign=9)
-data['macd'] = macd_indicator.macd()
-data['macd_signal'] = macd_indicator.macd_signal()
-
-# Compute EMAs (13, 48, and 200)
-ema_13_indicator = ta.trend.EMAIndicator(close=data['Close'], window=13)
-ema_48_indicator = ta.trend.EMAIndicator(close=data['Close'], window=48)
-ema_200_indicator = ta.trend.EMAIndicator(close=data['Close'], window=200)
-
-data['Ema 13'] = ema_13_indicator.ema_indicator()
-data['Ema 48'] = ema_48_indicator.ema_indicator()
-data['Ema 200'] = ema_200_indicator.ema_indicator()
-
 
 class TradingEnv(gymnasium.Env):
     """Custom trading environment incorporating technical indicators."""
@@ -125,6 +99,7 @@ class TradingEnv(gymnasium.Env):
         print(f'Cash: ${self.cash:.2f}')
         print(f'Profit: ${profit:.2f}')
 
+# Example Execution
 env = TradingEnv(data)
 obs = env.reset()
 done = False
